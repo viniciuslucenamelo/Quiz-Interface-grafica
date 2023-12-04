@@ -1,51 +1,77 @@
 package projeto.quiz.gui;
-import javafx.application.Application;
-import javafx.geometry.Insets;
-import javafx.scene.Scene;
-import javafx.scene.control.Button;
-import javafx.scene.layout.VBox;
-import javafx.stage.Stage;
-import projeto.quiz.service.PerguntaManager;
-import projeto.quiz.repository.PerguntaRepository;
 
-public class MainGUI extends Application {
+import javax.swing.*;
+import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+
+public class MainGUI extends JFrame {
 
     private PerguntaManager perguntaManager = new PerguntaManager(PerguntaRepository.getInstance());
 
-    @Override
-    public void start(Stage primaryStage) {
-        primaryStage.setTitle("Menu");
+    public MainGUI() {
+        setTitle("Menu");
+        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        setSize(300, 250);
+        setLayout(new FlowLayout());
+        setResizable(false);
 
-        VBox vbox = new VBox();
-        vbox.setPadding(new Insets(10));
-        vbox.setSpacing(8);
+        JButton adicionarButton = new JButton("Adicionar Pergunta");
+        adicionarButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                perguntaManager.adicionarPergunta();
+            }
+        });
 
-        Button adicionarButton = new Button("Adicionar Pergunta");
-        adicionarButton.setOnAction(e -> perguntaManager.adicionarPergunta());
+        JButton removerButton = new JButton("Remover Pergunta");
+        removerButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                perguntaManager.removerPergunta();
+            }
+        });
 
-        Button removerButton = new Button("Remover Pergunta");
-        removerButton.setOnAction(e -> perguntaManager.removerPergunta());
+        JButton editarButton = new JButton("Editar Pergunta");
+        editarButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                perguntaManager.editarPergunta();
+            }
+        });
 
-        Button editarButton = new Button("Editar Pergunta");
-        editarButton.setOnAction(e -> perguntaManager.editarPergunta());
+        JButton listarButton = new JButton("Listar Perguntas");
+        listarButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                perguntaManager.listarPerguntas();
+            }
+        });
 
-        Button listarButton = new Button("Listar Perguntas");
-        listarButton.setOnAction(e -> perguntaManager.listarPerguntas());
-
-        Button jogarButton = new Button("Jogar");
+        JButton jogarButton = new JButton("Jogar");
         // Adicione a lógica do jogo para o botão Jogar aqui
 
-        Button sairButton = new Button("Sair");
-        sairButton.setOnAction(e -> primaryStage.close());
+        JButton sairButton = new JButton("Sair");
+        sairButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                dispose(); // Fecha a janela ao clicar em "Sair"
+            }
+        });
 
-        vbox.getChildren().addAll(adicionarButton, removerButton, editarButton, listarButton, jogarButton, sairButton);
-
-        Scene scene = new Scene(vbox, 300, 250);
-        primaryStage.setScene(scene);
-        primaryStage.show();
+        add(adicionarButton);
+        add(removerButton);
+        add(editarButton);
+        add(listarButton);
+        add(jogarButton);
+        add(sairButton);
     }
 
     public static void main(String[] args) {
-        launch(args);
+        SwingUtilities.invokeLater(new Runnable() {
+            public void run() {
+                new MainGUI().setVisible(true);
+            }
+        });
     }
 }
