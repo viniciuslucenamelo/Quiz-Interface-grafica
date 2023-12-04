@@ -1,5 +1,5 @@
 package projeto.quiz.service;
-package projeto.quiz.Refatorado.Exception.ListaVaziaException;
+import projeto.quiz.Refatorado.Exception.ListaVaziaException;
 
 import java.util.List;
 import java.util.Scanner;
@@ -67,7 +67,7 @@ public class PerguntaManager {
         }
     }
 
-    private void editarPergunta() throws ListaVaziaException {
+    public void editarPergunta() throws ListaVaziaException {
 
     PerguntaService perguntaService = new PerguntaService(PerguntaRepository.getInstance());
     List<Pergunta> perguntas = perguntaService.getPerguntas();
