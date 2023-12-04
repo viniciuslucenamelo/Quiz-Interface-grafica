@@ -4,15 +4,19 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import projeto.quiz.service.PerguntaManager;
+import projeto.quiz.repository.PerguntaRepository;
 
 public class MainGUI extends JFrame {
 
     private PerguntaManager perguntaManager = new PerguntaManager(PerguntaRepository.getInstance());
 
     public MainGUI() {
-        setTitle("Menu");
+        setTitle("QUIZ");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        setSize(300, 250);
+        getContentPane().setBackground(new Color(0x4682B4));
+
+        setSize(350, 250);
         setLayout(new FlowLayout());
         setResizable(false);
 
@@ -55,7 +59,7 @@ public class MainGUI extends JFrame {
         sairButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                dispose(); // Fecha a janela ao clicar em "Sair"
+                dispose();
             }
         });
 

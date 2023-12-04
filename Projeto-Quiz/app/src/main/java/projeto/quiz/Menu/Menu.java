@@ -1,5 +1,7 @@
 package projeto.quiz.Menu;
 
+import projeto.quiz.commands.CommandExecutor;
+import projeto.quiz.commands.JogarCommand;
 import projeto.quiz.domain.Pergunta;
 import projeto.quiz.repository.PerguntaRepository;
 import projeto.quiz.service.PerguntaManager;
@@ -15,6 +17,7 @@ public class Menu {
         PerguntaManager perguntaManager = new PerguntaManager(perguntaRepository);
 
         Scanner scanner = new Scanner(System.in);
+        CommandExecutor commandExecutor = new CommandExecutor();
 
         while (true) {
             System.out.println();
@@ -30,7 +33,7 @@ public class Menu {
 
             try {
                 int escolha = scanner.nextInt();
-                scanner.nextLine(); // Consumir a nova linha
+                scanner.nextLine();
 
                 switch (escolha) {
                     case 1:
@@ -46,8 +49,8 @@ public class Menu {
                         perguntaManager.listarPerguntas();
                         break;
                     case 5:
-                        // Adicione a lógica para jogar aqui, se necessário
-                        System.out.println("Opção ainda não implementada.");
+                        JogarCommand jogarCommand = new JogarCommand();
+                        commandExecutor.executeCommand(jogarCommand);
                         break;
                     case 6:
                         System.out.println("Encerrando o programa.");
@@ -58,7 +61,7 @@ public class Menu {
                 }
             } catch (java.util.InputMismatchException e) {
                 System.out.println("Opção inválida. Tente novamente.");
-                scanner.nextLine(); // Limpar o buffer de entrada
+                scanner.nextLine();
             }
         }
     }

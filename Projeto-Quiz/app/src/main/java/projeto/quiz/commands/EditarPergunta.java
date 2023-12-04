@@ -43,6 +43,7 @@ public class EditarPergunta implements Commands {
         System.out.println(); // ajudar formatação
         System.out.print("Digite o número da pergunta que deseja editar: ");
         int escolhaEdit = sc.nextInt();
+        sc.nextLine();
 
         // Verificar se a escolha do usuário está dentro dos limites
         if (escolhaEdit >= 0 && escolhaEdit < perguntas.size()) {

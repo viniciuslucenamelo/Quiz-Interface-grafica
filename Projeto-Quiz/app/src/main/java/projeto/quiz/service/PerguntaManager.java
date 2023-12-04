@@ -1,4 +1,5 @@
 package projeto.quiz.service;
+package projeto.quiz.Refatorado.Exception.ListaVaziaException;
 
 import java.util.List;
 import java.util.Scanner;
@@ -66,40 +67,81 @@ public class PerguntaManager {
         }
     }
 
-    public void editarPergunta() {
-        List<Pergunta> perguntas = repository.getAll();
-        
-        Scanner scanner = new Scanner(System.in);
+    private void editarPergunta() throws ListaVaziaException {
 
-        System.out.println("Lista de Perguntas disponíveis para editar:");
-        for (int i = 0; i < perguntas.size(); i++) {
-            System.out.println(i + ". Título: " + perguntas.get(i).getTitulo());
+    PerguntaService perguntaService = new PerguntaService(PerguntaRepository.getInstance());
+    List<Pergunta> perguntas = perguntaService.getPerguntas();
+
+    if (perguntas.isEmpty()) {
+        throw new ListaVaziaException("Não há perguntas para editar.");
+    }
+
+    Scanner sc = new Scanner(System.in);
+
+    System.out.println(); // ajudar formatação
+
+    // Listar os títulos das perguntas disponíveis
+    for (int i = 0; i < perguntas.size(); i++) {
+        System.out.println(i + ". Título: " + perguntas.get(i).getTitulo());
+    }
+
+    System.out.println(); // ajudar formatação
+    System.out.print("Digite o número da pergunta que deseja editar: ");
+    int escolhaEdit = sc.nextInt();
+    sc.nextLine();
+
+    // Verificar se a escolha do usuário está dentro dos limites
+    if (escolhaEdit >= 0 && escolhaEdit < perguntas.size()) {
+        System.out.println(); // ajudar formatação
+        System.out.print("Digite o novo título (ou Enter para manter o atual): ");
+        String novoTitulo = sc.nextLine();
+
+        if (!novoTitulo.trim().isEmpty()) {
+            perguntas.get(escolhaEdit).setTitulo(novoTitulo);
         }
 
-        System.out.println("Digite o número da pergunta que deseja editar: ");
-        int escolha = scanner.nextInt();
+        System.out.println(); // ajudar formatação
+        System.out.print("Digite a nova área do conhecimento (ou Enter para manter a atual): ");
+        String novaAreaDoConhecimento = sc.nextLine();
 
-        if (escolha >= 0 && escolha < perguntas.size()) {
-            Pergunta perguntaEditada = perguntas.get(escolha);
-
-            System.out.println("Digite o novo título (ou Enter para pular): ");
-            String novoTitulo = scanner.nextLine().trim();
-            if (!novoTitulo.isEmpty()) {
-                perguntaEditada.setTitulo(novoTitulo);
-            }
-
-            System.out.println("Digite a nova área do conhecimento (ou Enter para pular): ");
-            String novaAreaDoConhecimento = scanner.nextLine().trim();
-            if (!novaAreaDoConhecimento.isEmpty()) {
-                perguntaEditada.setAreaDoConhecimento(novaAreaDoConhecimento);
-            }
-
-            // Lógica para editar as alternativas pode ser adicionada aqui
-
-            repository.update(perguntaEditada);
-            System.out.println("Pergunta editada com sucesso!");
-        } else {
-            System.out.println("Escolha inválida. A pergunta não foi editada.");
+        if (!novaAreaDoConhecimento.trim().isEmpty()) {
+            perguntas.get(escolhaEdit).setAreaDoConhecimento(novaAreaDoConhecimento);
         }
+
+        // Editar as alternativas
+        List<Alternativa> alternativas = perguntas.get(escolhaEdit).getAlternativas();
+
+        for (int i = 0; i < alternativas.size(); i++) {
+            System.out.println(); // ajudar formatação
+            Alternativa alternativa = alternativas.get(i);
+            System.out.println("Editar Alternativa " + (i + 1));
+
+            // Editar a opção
+            System.out.print("Nova opção (ou Enter para manter a atual): ");
+            String novaOpcao = sc.nextLine();
+            if (!novaOpcao.trim().isEmpty()) {
+                alternativa.setOpcao(novaOpcao);
+            }
+
+            // Editar a afirmativa
+            System.out.print("Nova afirmativa (ou Enter para manter a atual): ");
+            String novaAfirmativa = sc.nextLine();
+            if (!novaAfirmativa.trim().isEmpty()) {
+                alternativa.setAfirmativa(novaAfirmativa);
+            }
+
+            // Editar se é a opção correta
+            System.out.print("É a opção correta? (true/false) (ou Enter para manter a atual): ");
+            String respostaCorreta = sc.nextLine();
+            if (!respostaCorreta.trim().isEmpty()) {
+                boolean novaOpcaoCorreta = Boolean.parseBoolean(respostaCorreta);
+                alternativa.setOpcaoCorreta(novaOpcaoCorreta);
+            }
+        }
+
+        System.out.println("Pergunta editada com sucesso.");
+    } else {
+        System.out.println("Escolha inválida. A pergunta não foi editada.");
     }
 }
+

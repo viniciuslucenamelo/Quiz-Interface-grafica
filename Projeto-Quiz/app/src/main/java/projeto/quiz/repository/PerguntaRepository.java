@@ -8,7 +8,7 @@ public class PerguntaRepository {
     private static PerguntaRepository instance;
     private List<Pergunta> perguntas; 
 
-    private PerguntaRepository(DataService dataService) {
+    public PerguntaRepository(DataService dataService) {
         this.dataService = dataService;
         this.perguntas = dataService.getAll();  
     }
@@ -44,6 +44,6 @@ public class PerguntaRepository {
 
     public void add(Pergunta pergunta) {
         perguntas.add(pergunta);
-        dataService.add(pergunta);  // Adicionando a pergunta também no DataService
+        //dataService.add(pergunta);  // Adicionando a pergunta também no DataService
     }
 }
