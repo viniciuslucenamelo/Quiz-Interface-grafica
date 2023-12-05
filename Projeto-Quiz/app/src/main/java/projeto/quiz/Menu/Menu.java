@@ -1,5 +1,6 @@
 package projeto.quiz.Menu;
 
+import projeto.quiz.Refatorado.Exception.ListaVaziaException;
 import projeto.quiz.commands.CommandExecutor;
 import projeto.quiz.commands.JogarCommand;
 import projeto.quiz.domain.Pergunta;
@@ -12,7 +13,7 @@ import java.util.Scanner;
 
 public class Menu {
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws ListaVaziaException {
         PerguntaRepository perguntaRepository = PerguntaRepository.getInstance();
         PerguntaManager perguntaManager = new PerguntaManager(perguntaRepository);
 

@@ -143,5 +143,5 @@ public class PerguntaManager {
     } else {
         System.out.println("Escolha inválida. A pergunta não foi editada.");
     }
-}
+}}
 
